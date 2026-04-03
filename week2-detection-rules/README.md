@@ -222,10 +222,31 @@ Detection system confirmed operational by:
 
 Screenshots stored inside:
 
-```
 week2-detection-rules/screenshots/
-```
 
+---
+
+## Rootcheck Alert Detection
+
+![Rootcheck Alert](screenshots/week2-rootcheck-alert.png)
+
+Shows host-based anomaly detection events triggered by rootcheck module.
+
+---
+
+## File Integrity Monitoring Alerts
+
+![FIM Alert](screenshots/week2-fim-file-change-alert.png)
+
+Shows file addition, deletion, and checksum modification alerts detected by Wazuh.
+
+---
+
+## Alerts JSON Log Verification
+
+![Alerts JSON Log](screenshots/week2-alert-json-rootcheck-log.png)
+
+Shows raw alerts.json log entries confirming backend detection processing.
 ---
 
 ## Rootcheck Alert Detection
