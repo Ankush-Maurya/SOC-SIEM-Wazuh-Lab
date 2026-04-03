@@ -169,19 +169,19 @@ This confirms SOC monitoring infrastructure is operational.
 
 ---
 
-Screenshots
+# Screenshots
 
-Screenshots stored inside:
+## Agent Active Status
 
-week1-infrastructure/screenshots/
-
-Included verification evidence:
-
-screenshots/week1-agent-active.png
+![Agent Active Status](screenshots/week1-agent-active.png)
 
 Shows Windows agent successfully connected with Wazuh Manager.
 
-screenshots/week1-sysmon-installed.png
+---
+
+## Sysmon Installation Verification
+
+![Sysmon Installed](screenshots/week1-sysmon-installed.png)
 
 Shows Sysmon event logs inside Windows Event Viewer confirming installation.
 
