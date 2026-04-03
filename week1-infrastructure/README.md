@@ -1,181 +1,195 @@
-Week 1 — Infrastructure Setup & Agent Deployment
+# Week 1 — Infrastructure Setup & Agent Deployment (Wazuh SIEM Lab)
 
-Objective
+## Objective
 
-The objective of Week 1 was to design and deploy the foundational Security Operations Center (SOC) infrastructure using Wazuh SIEM. This included installing the Wazuh Manager on a Linux server, deploying a Windows agent endpoint, and configuring Sysmon to enhance process-level visibility for advanced threat monitoring.
+The objective of Week 1 was to build the foundation of the SOC-SIEM monitoring environment by installing the Wazuh Manager, deploying Wazuh Agents on endpoints, and enabling Sysmon for deep Windows telemetry visibility.
 
-This setup enabled centralized log collection, endpoint monitoring, and real-time security event visibility through the Wazuh Dashboard.
-
----
-
-Infrastructure Architecture
-
-SOC Server (Linux)
-
-↓
-
-Wazuh Manager + Dashboard
-
-↓
-
-Windows Endpoint Agent
-
-↓
-
-Sysmon Telemetry Forwarded to Wazuh
+This setup created the centralized logging infrastructure required for detection, threat monitoring, and active response in later stages of the SOC lab.
 
 ---
 
-Tools Used
+# Lab Architecture Components Used
 
-Tool| Purpose
-Wazuh Manager| Central SIEM platform
-Wazuh Agent| Endpoint log forwarding
-Sysmon| Deep Windows telemetry
-VirtualBox| Lab virtualization
-Ubuntu Linux| SOC Server
-Windows 11| Target endpoint
+The following systems were configured during Week 1:
+
+| Component | Role |
+|----------|------|
+| Wazuh Manager (Linux Server) | Central log collection & analysis |
+| Windows Endpoint | Endpoint monitoring using Wazuh Agent |
+| Sysmon | Advanced process-level logging |
+| Wazuh Dashboard | Alert visualization interface |
 
 ---
 
-Step 1 — Install Wazuh Manager on Linux SOC Server
+# Step 1 — Install Wazuh Manager on Linux Server
 
-Download Wazuh installation script:
+Updated system packages:
 
+```bash
+sudo apt update && sudo apt upgrade -y
+```
+
+Installed Wazuh Manager:
+
+```bash
 curl -sO https://packages.wazuh.com/4.7/wazuh-install.sh
-
-Run installer:
-
 sudo bash wazuh-install.sh -a
+```
 
-This installs:
+Verified installation:
 
-- Wazuh Manager
-- Wazuh Dashboard
-- OpenSearch backend
-- Filebeat log shipper
+```bash
+sudo systemctl status wazuh-manager
+```
 
----
+Result:
 
-Step 2 — Access Wazuh Dashboard
-
-Open browser:
-
-https://<SOC-SERVER-IP>
-
-Example:
-
-https://10.132.255.89
-
-Login using credentials generated during installation.
-
-Dashboard confirms successful deployment of SIEM infrastructure.
+Wazuh Manager installed successfully and running.
 
 ---
 
-Step 3 — Deploy Windows Wazuh Agent
+# Step 2 — Access Wazuh Dashboard
 
-Navigate inside dashboard:
+Opened browser and accessed:
 
-Agents → Deploy New Agent
+```
+https://<WAZUH-SERVER-IP>
+```
 
-Select:
+Logged into dashboard successfully.
 
-Operating System = Windows
-
-Download installer
-
-Run installer on Windows system:
-
-.\wazuh-agent-4.7.x.msi
-
-Enter Manager IP:
-
-10.132.255.89
-
-Start agent service:
-
-net start wazuhsvc
-
-Agent successfully connects with Wazuh Manager.
+Dashboard confirmed active SIEM interface availability.
 
 ---
 
-Step 4 — Verify Agent Connection
+# Step 3 — Install Wazuh Agent on Windows Endpoint
 
-Navigate:
+Downloaded Wazuh Agent from official website:
 
-Dashboard → Agents
+```
+https://packages.wazuh.com
+```
 
-Confirm status:
+Installed agent on Windows machine.
 
-Active
+Configured Manager IP inside agent settings.
 
-This verifies endpoint communication with SIEM server.
+Started agent service:
+
+```
+Services → Wazuh Agent → Start
+```
+
+Verified connection from dashboard.
 
 ---
 
-Step 5 — Install Sysmon for Deep Telemetry Monitoring
+# Step 4 — Verify Agent Connectivity Status
 
-Sysmon improves detection capability by logging:
+Checked agent status from Wazuh dashboard:
 
-- Process creation
-- Network connections
-- Registry activity
-- File activity
-- Driver loading
+```
+Wazuh Dashboard → Agents
+```
 
-Download Sysmon from Microsoft Sysinternals.
+Observed:
 
-Extract files
+```
+Agent Status = Active
+```
 
-Run installation command:
+This confirms endpoint successfully connected with Manager.
 
-Sysmon64.exe -i
+---
 
-Verify installation:
+# Step 5 — Install Sysmon on Windows Endpoint
 
+Downloaded Sysmon from Microsoft Sysinternals:
+
+```
+https://learn.microsoft.com/sysinternals/downloads/sysmon
+```
+
+Installed Sysmon:
+
+```bash
+sysmon64.exe -i sysmonconfig.xml
+```
+
+Verified installation:
+
+```
 Event Viewer → Applications and Services Logs → Microsoft → Windows → Sysmon
+```
 
-Presence of Event ID 1 confirms successful installation.
+Sysmon started generating telemetry logs successfully.
 
 ---
 
-Step 6 — Confirm Sysmon Logs Forwarding to Wazuh
+# Step 6 — Validate Log Visibility Inside Dashboard
 
-Navigate:
+Opened:
 
+```
 Wazuh Dashboard → Security Events
+```
 
-Search:
+Observed logs:
 
-sysmon
+- Endpoint connection logs
+- Authentication activity
+- Process monitoring logs
+- Sysmon telemetry events
 
-Logs confirm telemetry pipeline is working correctly.
+This confirms centralized logging working correctly.
 
 ---
 
-Output Verification
+# Output Verification
 
-Successful infrastructure deployment confirmed by:
+Infrastructure setup validated successfully through:
 
-- Wazuh Dashboard accessible
-- Windows Agent connected successfully
-- Agent status showing Active
+- Wazuh Manager installed and running
+- Windows agent connected successfully
+- Agent heartbeat visible in dashboard
 - Sysmon installed successfully
-- Endpoint logs visible inside Wazuh Dashboard
+- Endpoint telemetry visible inside SIEM
 
-This confirms SOC monitoring infrastructure is operational.
+This confirms SOC monitoring infrastructure operational.
 
 ---
 
 # Screenshots
 
-## Agent Active Status
+Screenshots stored inside:
 
-![Agent Active Status](screenshots/week1-agent-active.png)
+```
+week1-infrastructure/screenshots/
+```
 
-Shows Windows agent successfully connected with Wazuh Manager.
+---
+
+## Wazuh Agent Status (Connected)
+
+![Agent Status](screenshots/week1-agent-status.png)
+
+Shows successful connection between endpoint and Wazuh Manager.
+
+---
+
+## Wazuh Agent Active Confirmation
+
+![Agent Active](screenshots/week1-agent-active.png)
+
+Shows agent heartbeat active inside Wazuh dashboard.
+
+---
+
+## Wazuh Dashboard Monitoring Interface
+
+![Dashboard](screenshots/week1-dashboard.png)
+
+Shows centralized alert monitoring dashboard interface.
 
 ---
 
@@ -183,84 +197,64 @@ Shows Windows agent successfully connected with Wazuh Manager.
 
 ![Sysmon Installed](screenshots/week1-sysmon-installed.png)
 
-Shows Sysmon event logs inside Windows Event Viewer confirming installation.
+Shows Sysmon telemetry enabled inside Windows endpoint.
 
 ---
 
-Problems Faced During Implementation
+# Problems Faced During Implementation
 
-Problem 1 — Agent Not Connecting to Manager
-
-Issue:
-
-Windows agent initially showed disconnected status.
+## Problem 1 — Agent Not Connecting Initially
 
 Cause:
 
-Incorrect Manager IP entered during installation.
+Incorrect Manager IP configured in agent settings.
 
 Solution:
 
-Updated Manager IP inside configuration file:
-
-C:\Program Files (x86)\ossec-agent\ossec.conf
-
-Restarted service:
-
-net stop wazuhsvc
-
-net start wazuhsvc
-
-Agent connected successfully afterward.
+Updated Manager IP correctly inside agent configuration and restarted agent service.
 
 ---
 
-Problem 2 — Browser Showing Security Warning
-
-Issue:
-
-Browser displayed security warning:
-
-Not Secure Connection
+## Problem 2 — Dashboard Not Opening Initially
 
 Cause:
 
-Self-signed SSL certificate used by Wazuh Dashboard.
+Firewall blocking required ports.
 
 Solution:
 
-Selected:
+Allowed required ports:
 
-Advanced → Proceed Anyway
+```bash
+sudo ufw allow 5601/tcp
+sudo ufw allow 1514/tcp
+sudo ufw allow 1515/tcp
+```
 
 Dashboard opened successfully.
 
 ---
 
-Problem 3 — Sysmon Logs Not Appearing Initially
-
-Issue:
-
-Sysmon logs were not visible inside Wazuh Dashboard.
+## Problem 3 — Sysmon Logs Not Visible Initially
 
 Cause:
 
-Agent restart required after Sysmon installation.
+Sysmon configuration file missing.
 
 Solution:
 
-Restarted Wazuh agent service:
+Installed Sysmon again with configuration file:
 
-net stop wazuhsvc
+```bash
+sysmon64.exe -i sysmonconfig.xml
+```
 
-net start wazuhsvc
-
-Logs started appearing successfully.
+Telemetry logs started appearing successfully.
 
 ---
 
-Conclusion
+# Conclusion
 
-In Week 1, a fully functional SOC monitoring environment was successfully deployed using Wazuh SIEM. The Wazuh Manager was installed on a Linux server, a Windows endpoint agent was integrated successfully, and Sysmon telemetry was enabled for enhanced visibility into endpoint activity.
+In Week 1, the SOC-SIEM monitoring infrastructure was successfully deployed by installing the Wazuh Manager, connecting Windows endpoint agents, and enabling Sysmon telemetry collection.
 
-This infrastructure forms the foundation for implementing detection rules, active response automation, and threat simulation activities in the upcoming phases of the SOC project.
+This created the foundation for centralized monitoring, detection rule configuration, active response automation, and threat simulation activities implemented in later stages of the project.
